@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\ZendeskApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/tickets', [App\Http\Controllers\TicketsController::class, 'tickets']);
+Route::get('/details/{ticket_id}', [App\Http\Controllers\TicketsController::class, 'details']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
