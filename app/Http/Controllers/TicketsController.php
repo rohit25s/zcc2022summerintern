@@ -7,7 +7,7 @@ use App\ZendeskApi;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Support\Collection;
-
+use Exception;
 use stdClass;
 use GuzzleHttp\Client;
 
@@ -36,7 +36,7 @@ class TicketsController extends Controller
     public function tickets(ZendeskApi $zendeskApi) {
     
         try{
-            $current_page=1;
+            $current_page=1;  
             $tickets_response = $zendeskApi->getTickets();
             $tickets_list = $tickets_response["tickets"];
 
@@ -47,17 +47,19 @@ class TicketsController extends Controller
                 $tickets_list = array_merge($tickets_list, $tickets_slice);
             }
 
-            $per_page = 20;
+            $per_page = 25;
             $data = (new Collection($tickets_list))->paginate($per_page);
             return view('tickets', compact('data'));
 
-        }catch (\Exception $e){
-            //abort(500, "Internal Server Error!");
+        } catch (\Exception $e){
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            abort($response->getStatusCode());
         }
     }
 
     public function details(ZendeskApi $zendeskApi, $ticket_id){
-       
+ 
         $details = $zendeskApi->getDetails($ticket_id)['ticket'];
         return view('details', compact('details'));
     }

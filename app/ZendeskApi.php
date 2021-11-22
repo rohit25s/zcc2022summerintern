@@ -3,6 +3,8 @@ namespace App;
 use stdClass;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Exception\ClientException;
+use Exception;
 
 class ZendeskApi
 {
@@ -18,16 +20,15 @@ class ZendeskApi
             $user = env('user', '');
             $password = env('password', '');
             $base_uri = env('base_uri', '');
-            $this->client = new \GuzzleHttp\Client(['base_uri' =>  $base_uri, 'auth' => [$user, $password], 'verify' => false, 'http_errors' => false ]);
+            $this->client = new \GuzzleHttp\Client(['base_uri' =>  $base_uri, 'auth' => [$user, $password], 'verify' => false ]);
         } catch (\Exception $e) {
-             //throw new \Exception($e->getMessage(), 1);
-             abort(403, $e->getMessage());
-        }
+             throw new \Exception($e->getMessage(), 1);
+        }  
     }
 
     public function getTickets(){
         $response = $this->client->request("GET", "tickets.json");
-        $contents = $response->getBody();
+        $contents = $response->getBody();   
         return json_decode($contents, true);
     }
 

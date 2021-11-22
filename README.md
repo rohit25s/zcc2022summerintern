@@ -19,13 +19,17 @@ php artisan migrate
 # start server
 php artisan serve
 ```
-
-# open in browser
+# How to Use
+## open in browser
 http://127.0.0.1:8080/home
 
-if not a returning user, register and then login otherwise login using credentials used to register.
+if not a returning user, register and then login otherwise login using credentials used to register. <br/>
 
-# to fix node issues
+Click on **List Tickets** button to list tickets
+Each ticket when clicked upon takes to a details page for that ticket.
+
+
+# to fix node issues(if any)
 ```
 npm i vue-loader
 ```

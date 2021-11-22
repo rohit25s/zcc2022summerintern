@@ -1,0 +1,1 @@
+<h3 class="page-title text-center">Search for user by ID</h3>
