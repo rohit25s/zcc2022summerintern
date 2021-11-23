@@ -26,18 +26,33 @@ class ZendeskApi
         }  
     }
 
+    /**
+     * fetch list of tickets using zendesk api
+     *
+     * @return Array
+     */
     public function getTickets(){
         $response = $this->client->request("GET", "tickets.json");
         $contents = $response->getBody();   
         return json_decode($contents, true);
     }
 
+    /**
+     * fetch list of tickets using zendesk api given a page no
+     *
+     * @return Array
+     */
     public function getTicketsNextPage($page){
         $response = $this->client->request("GET", "tickets.json?page=".$page);
         $contents = $response->getBody();
         return json_decode($contents, true);
     }
 
+    /**
+     * fetch details for $ticket_id
+     *
+     * @return Array
+     */
     public function getDetails($ticket_id){
         $response = $this->client->request("GET", "tickets/".$ticket_id.".json");
         $contents = $response->getBody();

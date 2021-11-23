@@ -33,6 +33,11 @@ class TicketsController extends Controller
         return view('home');
     }
 
+    /**
+     * Fetch the tickets and show the paginated list.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function tickets(ZendeskApi $zendeskApi) {
     
         try{
@@ -58,6 +63,11 @@ class TicketsController extends Controller
         }
     }
 
+    /**
+     * Fetch the details given a ticket Id and show the ticket dashboard
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function details(ZendeskApi $zendeskApi, $ticket_id){
  
         $details = $zendeskApi->getDetails($ticket_id)['ticket'];
