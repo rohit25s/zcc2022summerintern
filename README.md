@@ -4,12 +4,16 @@ composer install
  
 composer install
 composer require laravel/ui
-php artisan ui vue --auth
 
 npm install && npm run dev
 ```
 
 copy .env.example into .env <br/>
+
+generate key <br/>
+```
+php artisan key:generate
+```
 edit database schema section to match local database created <br/>
 Update Api credentials in .env <br/>
 # to migrate database
@@ -35,6 +39,15 @@ run
 ```
 php artisan test --env=testing
 ```
+
+# to setup composer
+* on mac
+```
+brew install composer
+```
+or <br/>
+follow instructions on the page https://getcomposer.org/download/
+
 # to fix node issues(if any)
 ```
 npm i vue-loader
