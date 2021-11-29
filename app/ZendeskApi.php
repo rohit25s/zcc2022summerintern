@@ -18,11 +18,14 @@ class ZendeskApi
     {
         try {
             $user = env('user', '');
-            $password = env('password', '');
+            $token = env('token', '');
             $base_uri = env('base_uri', '');
-            $this->client = new \GuzzleHttp\Client(['base_uri' =>  $base_uri, 'auth' => [$user, $password], 'verify' => false ]);
+            $this->client = new \GuzzleHttp\Client(['base_uri' =>  $base_uri, 'auth' => [$user."/token", $token], 'verify' => false ]);
         } catch (\Exception $e) {
-             throw new \Exception($e->getMessage(), 1);
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $responseCode = $response->getStatusCode();
+            throw new \Exception($responseBodyAsString, $responseCode);
         }  
     }
 
@@ -32,9 +35,16 @@ class ZendeskApi
      * @return Array
      */
     public function getTickets(){
-        $response = $this->client->request("GET", "tickets.json");
-        $contents = $response->getBody();   
-        return json_decode($contents, true);
+        try {
+            $response = $this->client->request("GET", "tickets.json");
+            $contents = $response->getBody();   
+            return json_decode($contents, true);
+        } catch (\Exception $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $responseCode = $response->getStatusCode();
+            throw new \Exception($responseBodyAsString, $responseCode);
+        }    
     }
 
     /**
@@ -43,9 +53,16 @@ class ZendeskApi
      * @return Array
      */
     public function getTicketsNextPage($page){
-        $response = $this->client->request("GET", "tickets.json?page=".$page);
-        $contents = $response->getBody();
-        return json_decode($contents, true);
+        try {
+            $response = $this->client->request("GET", "tickets.json?page=".$page);
+            $contents = $response->getBody();
+            return json_decode($contents, true);
+        } catch (\Exception $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $responseCode = $response->getStatusCode();
+            throw new \Exception($responseBodyAsString, $responseCode);
+        }
     }
 
     /**
@@ -54,8 +71,15 @@ class ZendeskApi
      * @return Array
      */
     public function getDetails($ticket_id){
-        $response = $this->client->request("GET", "tickets/".$ticket_id.".json");
-        $contents = $response->getBody();
-        return json_decode($contents, true);
+        try {
+            $response = $this->client->request("GET", "tickets/".$ticket_id.".json");
+            $contents = $response->getBody();
+            return json_decode($contents, true);
+        } catch (\Exception $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+            $responseCode = $response->getStatusCode();
+            throw new \Exception($responseBodyAsString, $responseCode);
+        }
     }
 }

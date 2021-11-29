@@ -21,6 +21,7 @@ class TicketsController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth');
     }
 
     /**
@@ -57,9 +58,7 @@ class TicketsController extends Controller
             return view('tickets', compact('data'));
 
         } catch (\Exception $e){
-            $response = $e->getResponse();
-            $responseBodyAsString = $response->getBody()->getContents();
-            abort($response->getStatusCode());
+            abort($e->getCode());
         }
     }
 
@@ -69,9 +68,11 @@ class TicketsController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function details(ZendeskApi $zendeskApi, $ticket_id){
- 
-        $details = $zendeskApi->getDetails($ticket_id)['ticket'];
-        return view('details', compact('details'));
+        try{
+            $details = $zendeskApi->getDetails($ticket_id)['ticket'];
+            return view('details', compact('details'));
+        } catch (\Exception $e){
+            abort($e->getCode());
+        }
     }
-
 }
